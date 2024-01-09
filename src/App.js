@@ -26,6 +26,9 @@ function App() {
       });
 
     setCards(shuffledCards);
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns(0);
   };
 
   const handleCardChoice = (card) => {
@@ -59,6 +62,11 @@ function App() {
       }
     }
   }, [choiceOne, choiceTwo, resetTurn]);
+
+  // Initial load
+  useEffect(() => {
+    startGame();
+  }, []);
 
   return (
     <div className="App">
