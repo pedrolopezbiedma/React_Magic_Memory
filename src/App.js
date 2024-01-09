@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import SingleCard from "./components/SingleCard";
 
@@ -28,11 +28,27 @@ function App() {
     setCards(shuffledCards);
   };
 
-  const handleCardClick = (card) => {
-    console.log("Clicked card is -->", card);
-    console.log("Choice one is -->", !choiceOne);
+  const handleCardChoice = (card) => {
     !choiceOne ? setChoiceOne(card) : setChoiceTwo(card);
   };
+
+  const resetTurn = useCallback(() => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns(turns + 1);
+  }, [turns]);
+
+  useEffect(() => {
+    if (choiceOne && choiceTwo) {
+      if (choiceOne.src === choiceTwo.src) {
+        console.log("Cards match!");
+      } else {
+        console.log("Cards dont match!");
+      }
+
+      resetTurn();
+    }
+  }, [choiceOne, choiceTwo, resetTurn]);
 
   return (
     <div className="App">
@@ -43,7 +59,7 @@ function App() {
           <SingleCard
             key={card.id}
             card={card}
-            handleCardClick={handleCardClick}
+            handleCardChoice={handleCardChoice}
           />
         ))}
       </div>

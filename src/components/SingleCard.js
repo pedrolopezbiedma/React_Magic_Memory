@@ -1,6 +1,6 @@
-const SingleCard = ({ card, handleCardClick }) => {
-  const handleClick = () => {
-    handleCardClick(card);
+const SingleCard = ({ card, handleCardChoice }) => {
+  const handleCardClick = () => {
+    handleCardChoice(card);
   };
 
   return (
@@ -8,7 +8,7 @@ const SingleCard = ({ card, handleCardClick }) => {
       <div>
         <img className="front" src={card.src} alt="card front" />
         <img
-          onClick={handleClick}
+          onClick={handleCardClick}
           className="back"
           src="../../img/cover.png"
           alt="card back"
