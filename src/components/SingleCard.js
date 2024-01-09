@@ -1,8 +1,10 @@
 import "./SingleCard.css";
 
-const SingleCard = ({ card, handleCardChoice, flipped }) => {
+const SingleCard = ({ card, disabled, flipped, handleCardChoice }) => {
   const handleCardClick = () => {
-    handleCardChoice(card);
+    if (!disabled) {
+      handleCardChoice(card);
+    }
   };
 
   return (
