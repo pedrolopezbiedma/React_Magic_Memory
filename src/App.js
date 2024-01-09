@@ -24,7 +24,6 @@ function App() {
         return { ...card, id: Math.random() * 10, matched: false };
       });
 
-    console.log("Cards are -->", shuffledCards);
     setCards(shuffledCards);
   };
 
@@ -44,14 +43,16 @@ function App() {
       if (choiceOne.src === choiceTwo.src) {
         setCards((prevCards) => {
           return prevCards.map((card) => {
-            return { ...card, matched: card.src === choiceOne.src };
+            return {
+              ...card,
+              matched: !card.matched ? card.src === choiceOne.src : true,
+            };
           });
         });
+        resetTurn();
       } else {
-        console.log("Cards dont match!");
+        setTimeout(() => resetTurn(), 1000);
       }
-
-      resetTurn();
     }
   }, [choiceOne, choiceTwo, resetTurn]);
 
@@ -60,13 +61,19 @@ function App() {
       <h1>Magic Match</h1>
       <button onClick={startGame}>New Game</button>
       <div className="card-grid">
-        {cards.map((card) => (
-          <SingleCard
-            key={card.id}
-            card={card}
-            handleCardChoice={handleCardChoice}
-          />
-        ))}
+        {cards &&
+          cards.map((card) => (
+            <SingleCard
+              key={card.id}
+              card={card}
+              flipped={
+                card.id === choiceOne?.id ||
+                card.id === choiceTwo?.id ||
+                card.matched
+              }
+              handleCardChoice={handleCardChoice}
+            />
+          ))}
       </div>
       <p>Turns: {turns}</p>
     </div>
