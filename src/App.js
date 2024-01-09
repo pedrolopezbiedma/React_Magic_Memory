@@ -21,7 +21,7 @@ function App() {
     const shuffledCards = [...cardsImages, ...cardsImages]
       .sort(() => Math.random() - 0.5)
       .map((card) => {
-        return { ...card, id: Math.random() * 10 };
+        return { ...card, id: Math.random() * 10, matched: false };
       });
 
     console.log("Cards are -->", shuffledCards);
@@ -35,13 +35,18 @@ function App() {
   const resetTurn = useCallback(() => {
     setChoiceOne(null);
     setChoiceTwo(null);
-    setTurns(turns + 1);
-  }, [turns]);
+    setTurns((prevTurns) => prevTurns + 1);
+  }, []);
 
+  // Handling choices match
   useEffect(() => {
     if (choiceOne && choiceTwo) {
       if (choiceOne.src === choiceTwo.src) {
-        console.log("Cards match!");
+        setCards((prevCards) => {
+          return prevCards.map((card) => {
+            return { ...card, matched: card.src === choiceOne.src };
+          });
+        });
       } else {
         console.log("Cards dont match!");
       }
@@ -63,6 +68,7 @@ function App() {
           />
         ))}
       </div>
+      <p>Turns: {turns}</p>
     </div>
   );
 }
